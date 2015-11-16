@@ -1,11 +1,7 @@
 package com.zia.nishan.flexyload;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,11 +18,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.zia.nishan.controller.FlashController;
+
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
-    private boolean isFlashOn;
-    private boolean hasFlash;
-    private Camera camera;
-    private Camera.Parameters params;
+    private FlashController flashController;
+
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 
     private FloatingActionButton lightFab;
@@ -50,8 +46,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         actionFab = (FloatingActionButton) findViewById(R.id.fab_end);
         actionFab.setOnClickListener(this);
 
-        hasFlash = getApplicationContext().getPackageManager()
-                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+        flashController = new FlashController(this);
+
         //loadFragment();
     }
 
@@ -70,7 +66,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.fab_start:
-                makeFlash();
+                flashController.makeFlash();
                 break;
             case R.id.fab_center:
                 initUserInterface();
@@ -89,49 +85,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         userView = findViewById(R.id.content_fragment);
         cardIv = (ImageView) userView.findViewById(R.id.iv_card);
         changeEt = (EditText) userView.findViewById(R.id.et_number);
-    }
-
-    private void makeFlash() {
-        if (!hasFlash) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Your mobile does not support flashlight")
-            .setTitle("Error");
-            builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    //TODO
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.setCancelable(true);
-            dialog.show();
-        } else {
-            turnOnFlash();
-        }
-    }
-
-    private void turnOnFlash() {
-        if (camera == null) {
-            camera = Camera.open();
-        }
-
-        if (camera == null){
-            return;
-        } else {
-            params = camera.getParameters();
-        }
-
-        if (!isFlashOn) {
-            params = camera.getParameters();
-            params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-            camera.setParameters(params);
-            camera.startPreview();
-            isFlashOn = true;
-        }else {
-            params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-            camera.setParameters(params);
-            camera.stopPreview();
-            isFlashOn = false;
-        }
     }
 
     private void call() {
