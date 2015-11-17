@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.zia.nishan.controller.FlashController;
+import com.zia.nishan.views.ViewNavigator;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
     private FlashController flashController;
@@ -31,6 +32,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     Fragment fragment;
     View userView;
+
+    private ViewNavigator framentNavigator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         actionFab = (FloatingActionButton) findViewById(R.id.fab_end);
         actionFab.setOnClickListener(this);
 
+        framentNavigator = new ViewNavigator(this);
+        framentNavigator.replaceWith(1);
         flashController = new FlashController(this);
 
         //loadFragment();
