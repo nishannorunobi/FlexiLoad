@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,7 +18,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.zia.nishan.controller.FlashController;
-import com.zia.nishan.util.TessOcr;
+import com.zia.nishan.views.CameraFragment;
+import com.zia.nishan.views.HomeFragment;
 import com.zia.nishan.views.ViewNavigator;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
@@ -31,7 +31,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton cameraFab;
     private FloatingActionButton actionFab;
 
-    Fragment fragment;
     View userView;
 
     private ViewNavigator framentNavigator;
@@ -54,17 +53,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         framentNavigator.replaceWith(1);
         flashController = new FlashController(this);
 
-        //loadFragment();
+        loadFragment(new HomeFragment());
     }
 
-    private void loadFragment() {
-        fragment = new HomeActivityFragment();
+    private void loadFragment(Fragment fragment) {
         FragmentManager fm = getSupportFragmentManager();
-        if (fragment == null) {
-            FragmentTransaction fragmentTransaction = fm.beginTransaction();
-            fragmentTransaction.replace(android.R.id.content, fragment);
-            fragmentTransaction.commit();
-        }
+        FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        fragmentTransaction.replace(android.R.id.content, fragment);
+        fragmentTransaction.commit();
     }
 
 
@@ -75,9 +71,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 flashController.makeFlash();
                 break;
             case R.id.fab_center:
-                initUserInterface();
+                loadFragment(new CameraFragment());
+                /*initUserInterface();
                 Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePictureIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+                startActivityForResult(takePictureIntent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);*/
                 break;
             case R.id.fab_end:
                 call();

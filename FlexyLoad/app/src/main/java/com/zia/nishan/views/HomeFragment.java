@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zia.nishan.flexyload.R;
-import com.zia.nishan.util.TessOcr;
+import com.zia.nishan.ocr.TessOcr;
 
 import java.io.InputStream;
 

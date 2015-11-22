@@ -1,4 +1,4 @@
-package com.zia.nishan.util;
+package com.zia.nishan.ocr;
 
 
 import android.app.Activity;
