@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.zia.nishan.controller.FlashController;
+import com.zia.nishan.util.TessOcr;
 import com.zia.nishan.views.ViewNavigator;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {

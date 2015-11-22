@@ -1,33 +1,70 @@
 package com.zia.nishan.util;
 
-/*
+
+import android.app.Activity;
+import android.graphics.Bitmap;
+
 import com.googlecode.tesseract.android.TessBaseAPI;
+import com.zia.nishan.ocr.TessDataManager;
 
 public class TessOcr {
-    private TessBaseAPI mTess;
+    private TessBaseAPI tessBaseAPI;
+    private Activity context;
+    public TessOcr(Activity context) {
+        this.context = context;
+        TessDataManager.initTessTrainedData(context);
+        tessBaseAPI = new TessBaseAPI();
 
-    public TessOcr() {
-        // TODO Auto-generated constructor stub
-        mTess = new TessBaseAPI();
-        String datapath = Environment.getExternalStorageDirectory() + "/tesseract/";
-        String language = "eng";
-        File dir = new File(datapath + "tessdata/");
-        if (!dir.exists())
-            dir.mkdirs();
-        mTess.init(datapath, language);
+        //String path = "/mnt/sdcard/tesseract/tessdata/eng.traineddata";
+        //TessDataManager.getTrainedDataPath();
+        String path = "/data/data/com.zia.nishan.flexyload/files/tesseract";
+
+        tessBaseAPI.setDebug(true);
+        tessBaseAPI.init(path, "eng");
+
+        //For example if we want to only detect numbers
+        tessBaseAPI.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST, "1234567890");
+        tessBaseAPI.setVariable(TessBaseAPI.VAR_CHAR_BLACKLIST, "!@#$%^&*()_+=-qwertyuiop[]}{POIU" +
+                "YTREWQasdASDfghFGHjklJKLl;L:'\"\\|~`xcvXCVbnmBNM,./<>?");
     }
 
     public String getOCRResult(Bitmap bitmap) {
-
-        mTess.setImage(bitmap);
-        String result = mTess.getUTF8Text();
-
+        //bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+        tessBaseAPI.setImage(bitmap);
+        String result = tessBaseAPI.getUTF8Text();
+        tessBaseAPI.end();
         return result;
     }
 
     public void onDestroy() {
-        if (mTess != null)
-            mTess.end();
+        if (tessBaseAPI != null)
+            tessBaseAPI.end();
     }
 
-}*/
+    /*public String detectText(Bitmap bitmap) {
+
+        TessDataManager.initTessTrainedData(context);
+        TessBaseAPI tessBaseAPI = new TessBaseAPI();
+
+        String path = "/mnt/sdcard/packagename/tessdata/eng.traineddata";
+
+        tessBaseAPI.setDebug(true);
+        tessBaseAPI.init(path, "eng"); //Init the Tess with the trained data file, with english language
+
+        //For example if we want to only detect numbers
+        tessBaseAPI.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST, "1234567890");
+        tessBaseAPI.setVariable(TessBaseAPI.VAR_CHAR_BLACKLIST, "!@#$%^&*()_+=-qwertyuiop[]}{POIU" +
+                "YTREWQasdASDfghFGHjklJKLl;L:'\"\\|~`xcvXCVbnmBNM,./<>?");
+
+
+        tessBaseAPI.setImage(bitmap);
+
+        String text = tessBaseAPI.getUTF8Text();
+
+        Log.d(TAG, "Got data: " + result);
+        tessBaseAPI.end();
+
+        return text;
+    }*/
+
+}
