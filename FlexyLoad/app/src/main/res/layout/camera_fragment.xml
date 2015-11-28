@@ -4,6 +4,6 @@
     android:layout_height="match_parent">
     <SurfaceView
         android:id="@+id/surfaceView_camera"
-        android:layout_width="240dp"
-        android:layout_height="180dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="350dp"/>
 </FrameLayout>
