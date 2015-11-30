@@ -2,10 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
+<!--    <TextView
+        android:id="@+id/hello_print"
         android:layout_width="match_parent"
-        android:text="Photo view"
-        android:layout_height="match_parent" />
+        android:text="Hello"
+        android:layout_height="wrap_content" />-->
     <ImageView
         android:id="@+id/iv_card"
         android:layout_width="match_parent"

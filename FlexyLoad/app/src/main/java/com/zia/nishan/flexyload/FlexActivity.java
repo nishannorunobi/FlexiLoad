@@ -13,9 +13,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.zia.nishan.controller.FlashController;
+import com.zia.nishan.interfaces.FragmentNavigator;
 import com.zia.nishan.interfaces.OnCameraButtonClickListener;
 import com.zia.nishan.views.CameraFragment;
 import com.zia.nishan.views.HomeFragment;
+import com.zia.nishan.views.PhotoViewFragment;
 
 /**
  * Created by nishan on 11/24/15.
@@ -30,6 +32,7 @@ public class FlexActivity extends AppCompatActivity implements View.OnClickListe
 
     private HomeFragment homeFragment;
     private CameraFragment cameraFragment;
+    private PhotoViewFragment photoViewFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,8 @@ public class FlexActivity extends AppCompatActivity implements View.OnClickListe
         homeFragment = new HomeFragment();
         cameraFragment = new CameraFragment();
         cameraFragment.setOnCameraButtonClickListener(onCameraButtonClickListener);
+        cameraFragment.setFragmentNavigator(fragmentNavigator);
+        photoViewFragment = new PhotoViewFragment();
         /*Init view*/
         callBtn = (Button) findViewById(R.id.btn_call);
         callBtn.setOnClickListener(this);
@@ -56,10 +61,23 @@ public class FlexActivity extends AppCompatActivity implements View.OnClickListe
         loadFragment(homeFragment);
     }
 
+    private FragmentNavigator fragmentNavigator = new FragmentNavigator() {
+        @Override
+        public void setFragment(int tag, Bundle bundle) {
+            switch (tag){
+                case R.layout.photo_view_fragment:
+                    photoViewFragment.setArguments(bundle);
+                    loadFragment(photoViewFragment);
+                break;
+            }
+        }
+    };
+
     private void loadFragment(Fragment fragment) {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         fragmentTransaction.replace(R.id.fl_fragment, fragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -107,7 +125,7 @@ public class FlexActivity extends AppCompatActivity implements View.OnClickListe
         public void turnOff() {
             camera_off_btn.setVisibility(View.GONE);
             camera_on_btn.setVisibility(View.VISIBLE);
-            loadFragment(homeFragment);
+            //loadFragment(homeFragment);
         }
     };
 }
