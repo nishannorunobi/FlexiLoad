@@ -1,9 +1,8 @@
-package com.zia.nishan.views;
+package com.moon.nishan.views;
 
 import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -16,12 +15,11 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.zia.nishan.controller.CameraController;
-import com.zia.nishan.flexyload.R;
-import com.zia.nishan.interfaces.FragmentNavigator;
-import com.zia.nishan.interfaces.OnCameraButtonClickListener;
+import com.moon.nishan.controller.CameraController;
+import com.moon.nishan.flexyload.R;
+import com.moon.nishan.interfaces.FragmentNavigator;
+import com.moon.nishan.interfaces.OnCameraButtonClickListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

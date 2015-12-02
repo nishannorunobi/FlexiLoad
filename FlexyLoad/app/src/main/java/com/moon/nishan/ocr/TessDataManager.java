@@ -1,9 +1,9 @@
-package com.zia.nishan.ocr;
+package com.moon.nishan.ocr;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.zia.nishan.flexyload.R;
+import com.moon.nishan.flexyload.R;
 
 import org.apache.commons.io.IOUtils;
 

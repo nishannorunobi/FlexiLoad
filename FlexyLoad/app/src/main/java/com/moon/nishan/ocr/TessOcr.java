@@ -1,11 +1,10 @@
-package com.zia.nishan.ocr;
+package com.moon.nishan.ocr;
 
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
-import com.zia.nishan.ocr.TessDataManager;
 
 public class TessOcr {
     private TessBaseAPI tessBaseAPI;
@@ -17,7 +16,7 @@ public class TessOcr {
 
         //String path = "/mnt/sdcard/tesseract/tessdata/eng.traineddata";
         //TessDataManager.getTrainedDataPath();
-        String path = "/data/data/com.zia.nishan.flexyload/files/tesseract";
+        String path = "/data/data/com.moon.nishan.flexyload/files/tesseract";
 
         tessBaseAPI.setDebug(true);
         tessBaseAPI.init(path, "eng");

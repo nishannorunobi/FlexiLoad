@@ -1,4 +1,4 @@
-package com.zia.nishan.views;
+package com.moon.nishan.views;
 
 import android.app.Activity;
 import android.graphics.BitmapFactory;
@@ -10,8 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.zia.nishan.flexyload.R;
-import com.zia.nishan.ocr.TessOcr;
+import com.moon.nishan.flexyload.R;
+import com.moon.nishan.ocr.TessOcr;
+import com.moon.nishan.util.ApplicationUtil;
 
 import java.io.InputStream;
 
@@ -39,7 +40,7 @@ public class HomeFragment extends Fragment{
             ivNumner.setImageBitmap(BitmapFactory.decodeStream(inputStream));
             TessOcr tessOcr = new TessOcr(getActivity());
             String number = tessOcr.getOCRResult(BitmapFactory.decodeStream(inputStream));
-            numnberTv.setText(number);
+            numnberTv.setText(ApplicationUtil.getBasePackageName());
         } catch (Exception e) {
             e.printStackTrace();
         }

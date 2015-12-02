@@ -1,4 +1,4 @@
-package com.zia.nishan.flexyload;
+package com.moon.nishan.flexyload;
 
 import android.content.Intent;
 import android.hardware.Camera;
@@ -13,13 +13,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.zia.nishan.controller.FlashController;
-import com.zia.nishan.interfaces.FragmentNavigator;
-import com.zia.nishan.interfaces.OnCameraButtonClickListener;
-import com.zia.nishan.interfaces.OnFlashButtonClickListener;
-import com.zia.nishan.views.CameraFragment;
-import com.zia.nishan.views.HomeFragment;
-import com.zia.nishan.views.PhotoViewFragment;
+import com.moon.nishan.controller.FlashController;
+import com.moon.nishan.interfaces.FragmentNavigator;
+import com.moon.nishan.interfaces.OnCameraButtonClickListener;
+import com.moon.nishan.interfaces.OnFlashButtonClickListener;
+import com.moon.nishan.views.CameraFragment;
+import com.moon.nishan.views.HomeFragment;
+import com.moon.nishan.views.PhotoViewFragment;
 
 /**
  * Created by nishan on 11/24/15.
