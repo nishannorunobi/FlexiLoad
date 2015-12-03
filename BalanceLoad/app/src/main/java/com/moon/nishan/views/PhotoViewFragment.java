@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.moon.nishan.balanceload.R;
+import com.moon.nishan.interfaces.EditViewChangeListener;
+import com.moon.nishan.ocr.TessOcr;
 
 import java.io.InputStream;
 
@@ -22,7 +24,7 @@ public class PhotoViewFragment extends Fragment {
     public static final String TAKEN_PHOTO = "TAKEN_PHOTO";
     private View fragment;
     private ImageView ivCard;
-    private byte[] data = null;
+    private EditViewChangeListener editViewChangeListener;
     public PhotoViewFragment() {
     }
     @Override
@@ -31,15 +33,21 @@ public class PhotoViewFragment extends Fragment {
         fragment = inflater.inflate(R.layout.photo_view_fragment, container, false);
         ivCard = (ImageView) fragment.findViewById(R.id.iv_card);
         Bundle bundle = this.getArguments();
-        data = bundle.getByteArray(TAKEN_PHOTO);
-        Bitmap image = BitmapFactory.decodeByteArray(data,0,data.length);
-        Drawable drawable = null;
-        drawable =  new BitmapDrawable(image);
-        ivCard.setImageBitmap(getImage());
+        Bitmap bitmap = getImage(bundle);
+        ivCard.setImageBitmap(bitmap);
+        parseNumber(bitmap);
         return fragment;
     }
 
-    private Bitmap getImage(){
+    private void parseNumber(Bitmap bitmap) {
+        TessOcr tessOcr = new TessOcr(getActivity());
+        String number = tessOcr.getOCRResult(bitmap);
+        if (number != null){
+            editViewChangeListener.setNumber(number);
+        }
+    }
+
+/*    private Bitmap getImage(){
         Bitmap bitmap = null;
         try {
             InputStream stream = getActivity().openFileInput("picture.jpg");
@@ -49,6 +57,20 @@ public class PhotoViewFragment extends Fragment {
             e.printStackTrace();
         }
         return bitmap;
+    }*/
+
+    private Bitmap getImage(Bundle bundle){
+        byte[] data = data = bundle.getByteArray(TAKEN_PHOTO);
+        Bitmap bitmap = null;
+        if (data != null) {
+            bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+        } else {
+            bitmap = (Bitmap) bundle.get("data");
+        }
+        return bitmap;
     }
 
+    public void setEditViewChangeListener(EditViewChangeListener editViewChangeListener) {
+        this.editViewChangeListener = editViewChangeListener;
+    }
 }

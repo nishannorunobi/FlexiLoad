@@ -1,6 +1,7 @@
 package com.moon.nishan.balanceload;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,21 +12,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.moon.nishan.controller.FlashController;
+import com.moon.nishan.interfaces.EditViewChangeListener;
 import com.moon.nishan.interfaces.FragmentNavigator;
 import com.moon.nishan.interfaces.OnCameraButtonClickListener;
 import com.moon.nishan.interfaces.OnFlashButtonClickListener;
+import com.moon.nishan.util.ApplicationUtil;
+import com.moon.nishan.util.Constants;
 import com.moon.nishan.views.CameraFragment;
 import com.moon.nishan.views.HomeFragment;
 import com.moon.nishan.views.PhotoViewFragment;
+
+import java.nio.ByteBuffer;
 
 /**
  * Created by nishan on 11/24/15.
  */
 public class FlexActivity extends AppCompatActivity implements View.OnClickListener {
     private FlashController flashController;
+    private EditText etNumber;
     private Button callBtn;
     private ImageView flash_on_btn;
     private ImageView flash_off_btn;
@@ -34,7 +43,6 @@ public class FlexActivity extends AppCompatActivity implements View.OnClickListe
 
     private HomeFragment homeFragment;
     private CameraFragment cameraFragment;
-    private PhotoViewFragment photoViewFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +53,8 @@ public class FlexActivity extends AppCompatActivity implements View.OnClickListe
         cameraFragment = new CameraFragment();
         cameraFragment.setOnCameraButtonClickListener(onCameraButtonClickListener);
         cameraFragment.setFragmentNavigator(fragmentNavigator);
-        photoViewFragment = new PhotoViewFragment();
         /*Init view*/
+        etNumber = (EditText) findViewById(R.id.et_number);
         callBtn = (Button) findViewById(R.id.btn_call);
         callBtn.setOnClickListener(this);
         flashController = new FlashController(this,onFlashButtonClickListener);
@@ -66,11 +74,21 @@ public class FlexActivity extends AppCompatActivity implements View.OnClickListe
     private FragmentNavigator fragmentNavigator = new FragmentNavigator() {
         @Override
         public void setFragment(int tag, Bundle bundle) {
+            Fragment fragment = null;
             switch (tag){
                 case R.layout.photo_view_fragment:
-                    photoViewFragment.setArguments(bundle);
-                    loadFragment(photoViewFragment);
+                    PhotoViewFragment fg = new PhotoViewFragment();
+                    fg.setEditViewChangeListener(editViewChangeListener);
+                    fg.setArguments(bundle);
+                    fragment = fg;
                 break;
+            }
+            if (fragment != null) {
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                fragmentTransaction.replace(R.id.fl_fragment, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
             }
         }
     };
@@ -104,7 +122,7 @@ public class FlexActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.camera_on_btn:
                 if (onCameraButtonClickListener != null) {
-                    loadFragment(cameraFragment);
+                    openCamera();
                     onCameraButtonClickListener.turnOn();
                 }
                 break;
@@ -119,6 +137,11 @@ public class FlexActivity extends AppCompatActivity implements View.OnClickListe
                 loadFragment(new HomeFragment());
                 break;
         }
+    }
+
+    private void openCamera() {
+        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent,Constants.REQUEST_CODE_FOR_EXTERNAL_CAMERA_INTENT);
     }
 
     private void call() {
@@ -159,4 +182,24 @@ public class FlexActivity extends AppCompatActivity implements View.OnClickListe
             flash_on_btn.setVisibility(View.VISIBLE);
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        if (requestCode == Constants.REQUEST_CODE_FOR_EXTERNAL_CAMERA_INTENT && resultCode == RESULT_OK) {
+            onCameraButtonClickListener.turnOff();
+            Bundle bundle = data.getExtras();
+            fragmentNavigator.setFragment(R.layout.photo_view_fragment, bundle);
+        }
+    }
+
+    private EditViewChangeListener editViewChangeListener = new EditViewChangeListener() {
+        @Override
+        public void setNumber(String number) {
+            if (etNumber != null){
+                etNumber.setText(number);
+            }
+        }
+    };
+
 }
