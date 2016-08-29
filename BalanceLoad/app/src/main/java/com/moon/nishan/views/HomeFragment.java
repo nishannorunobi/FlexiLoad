@@ -40,7 +40,7 @@ public class HomeFragment extends Fragment{
             ivNumner.setImageBitmap(BitmapFactory.decodeStream(inputStream));
             TessOcr tessOcr = new TessOcr(getActivity());
             String number = tessOcr.getOCRResult(BitmapFactory.decodeStream(inputStream));
-            numnberTv.setText(ApplicationUtil.getBasePackageName());
+            numnberTv.setText(number);
         } catch (Exception e) {
             e.printStackTrace();
         }
